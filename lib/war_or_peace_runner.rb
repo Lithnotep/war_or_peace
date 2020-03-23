@@ -4,12 +4,6 @@ require './lib/player'
 require './lib/turn'
 require 'pry'
 
-p "Welcome to War! (or Peace) This game will be played with 52 cards.
-The players today are Megan and Aurora."
-p "Type 'GO' to start the game!"
-start_game = gets.chomp
-
-
 deck1 = Deck.new([])
 deck2 = Deck.new([])
 player1 = Player.new("Megan", deck1)
@@ -30,3 +24,11 @@ player1.deck.cards << card_holder.shift(26)
 player1.deck.cards.flatten!
 player2.deck.cards << card_holder
 player2.deck.cards.flatten!
+
+p "Welcome to War! (or Peace) This game will be played with 52 cards.
+The players today are Megan and Aurora."
+p "Type 'GO' to start the game!"
+start_game = gets.chomp
+
+if start_game == "go" || "GO" || "go!" || "Go" || "Go!" || "GO!"
+  turn.start

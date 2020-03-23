@@ -13,6 +13,11 @@ class Turn
   @is_mutual = []
   end
 
+  def start
+
+
+  end
+
   def type
     turn_result = nil
     if @player1.deck.rank_of_card_at(0) == @player2.deck.rank_of_card_at(0) && @player1.deck.rank_of_card_at(2) == @player2.deck.rank_of_card_at(2) && @spoils_of_war == [] || @is_mutual == true
