@@ -14,7 +14,8 @@ class Turn
   end
 
   def start
-
+    current_turn = 0
+    until @player
 
   end
 
