@@ -32,7 +32,6 @@ class Turn
       @player2.deck.cards.shuffle!
       current_turn += 1
     end
-    binding.pry
     if type == :war && @player1.deck.cards.count < 3 || type == :war && @player2.deck.cards.count < 3 || type == :mutually_assured_destruction && @player1.deck.cards.count < 3 || @player1.deck.cards.count <= 1 || @player2.deck.cards.count <= 1
       if @player1.deck.cards.count > @player2.deck.cards.count
         p "#{@player2.name} has won!"
@@ -44,7 +43,13 @@ class Turn
     elsif @player2.has_lost?
       p "#{@player1.name} has won!"
     else
-      p "DRAW"
+      if @player1.deck.cards.count > @player2.deck.cards.count
+        p "#{@player1.name} has won!"
+      elsif @player2.deck.cards.count > @player1.deck.cards.count
+        p "#{@player2.name} has won!"
+      else
+        p "DRAW"
+      end
     end
 
   end
