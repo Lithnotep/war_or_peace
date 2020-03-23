@@ -39,6 +39,10 @@ class Deck
   end
 
   def rank_of_card_at(index)
+    if @cards[0..2] == nil
+    nil
+    else
     @cards[index].rank
     end
   end
+end

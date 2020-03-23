@@ -32,7 +32,13 @@ class Turn
       @player2.deck.cards.shuffle!(random: Random.new(1))
       current_turn += 1
     end
-    if @player1.has_lost?
+    if winner == "No Cards"
+      if @player1.deck.rank_of_card_at(0..2) == nil
+        p "#{@player2.name} has won!"
+      elsif @player2.deck.rank_of_card_at(0..2) == nil 
+        p "#{@player1.name} has won!"
+      end
+    elsif @player1.has_lost?
       p "#{@player2.name} has won!"
     elsif @player2.has_lost?
       p "#{@player1.name} has won!"
