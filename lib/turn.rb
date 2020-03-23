@@ -14,11 +14,21 @@ class Turn
   end
 
   def start
-    p "#{@player1} and #{@player2} will now battle!"
+    p "#{@player1.name} and #{@player2.name} will now battle!"
     current_turn = 1
-    until @player1.has_lost? || @player2.has_lost || type == :war && @player1.deck.cards.count <= 2 || type == :war && @player2.deck.cards.count <= 2 || current_turn == 1000000
-
+    until @player1.has_lost? || @player2.has_lost? || type == :war && @player1.deck.cards.count <= 2 || type == :war && @player2.deck.cards.count <= 2 || current_turn == 100
+      pile_cards
+      award_spoils(winner)
+        if type == :basic || type == :war
+          p winner.name
+        else
+          p winner
+        end
+      @player1.deck.cards.shuffle!(random: Random.new(1))
+      @player2.deck.cards.shuffle!(random: Random.new(1))
+      current_turn += 1
     end
+    p "it ends"
 
 
 

@@ -25,10 +25,11 @@ player1.deck.cards.flatten!
 player2.deck.cards << card_holder
 player2.deck.cards.flatten!
 
-p "Welcome to War! (or Peace) This game will be played with 52 cards.
-The players today are Megan and Aurora."
+p "Welcome to War! (or Peace) This game will be played with 52 cards."
+p "The players today are Megan and Aurora."
 p "Type 'GO' to start the game!"
 start_game = gets.chomp
 
-if start_game == "go" || "GO" || "go!" || "Go" || "Go!" || "GO!"
+if start_game == "go" || start_game == "GO" || start_game == "go!" || start_game == "Go" || start_game == "Go!" || start_game == "GO!"
   turn.start
+end
