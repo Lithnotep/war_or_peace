@@ -14,8 +14,13 @@ class Turn
   end
 
   def start
-    current_turn = 0
-    until @player
+    p "#{@player1} and #{@player2} will now battle!"
+    current_turn = 1
+    until @player1.has_lost? || @player2.has_lost || type == :war && @player1.deck.cards.count <= 2 || type == :war && @player2.deck.cards.count <= 2 || current_turn == 1000000
+
+    end
+
+
 
   end
 
