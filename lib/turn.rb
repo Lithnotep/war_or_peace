@@ -51,7 +51,6 @@ class Turn
         p "DRAW"
       end
     end
-
   end
 
   def type
@@ -124,5 +123,4 @@ end
       "No Winner"
     end
   end
-
 end
