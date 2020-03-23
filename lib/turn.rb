@@ -16,7 +16,7 @@ class Turn
   def start
     p "#{@player1.name} and #{@player2.name} will now battle!"
     current_turn = 1
-    until @player1.has_lost? || @player2.has_lost? || type == :war && @player1.deck.cards.count <= 2 || type == :war && @player2.deck.cards.count <= 2 || current_turn == 10000
+    until @player1.has_lost? || @player2.has_lost? || type == :war && @player1.deck.cards.count <= 2 || type == :war && @player2.deck.cards.count <= 2 || current_turn == 1000000
       pile_cards
       award_spoils(winner)
         if type == :basic || type == :war
@@ -25,7 +25,6 @@ class Turn
           else
           p "Turn #{current_turn}: WAR! #{winner.name} wins 6 cards!"
           end
-
         else
           p winner
         end
@@ -80,7 +79,9 @@ end
 
 
   def winner
-    if type == :basic
+    if @player1.deck.rank_of_card_at(0) == nil && @player1.deck.rank_of_card_at(2) == nil || @player2.deck.rank_of_card_at(0) == nil && @player2.deck.rank_of_card_at(2)
+      "No Cards"
+    elsif type == :basic
       if @player1.deck.rank_of_card_at(0) > @player2.deck.rank_of_card_at(0)
         @player1
       else
@@ -98,10 +99,12 @@ end
   end
 
   def award_spoils(winner)
-    if type == :basic || :war
+    if type == :basic || type == :war
       winner_cards = winner.deck.cards << spoils_of_war
       winner_cards.flatten!
       spoils_of_war.clear
+    else
+      "No Winner"
     end
   end
 
