@@ -40,5 +40,5 @@ class Deck
 
   def rank_of_card_at(index)
     @cards[index].rank
-    end
   end
+end
