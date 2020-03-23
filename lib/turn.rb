@@ -16,7 +16,7 @@ class Turn
   def start
     p "#{@player1.name} and #{@player2.name} will now battle!"
     current_turn = 1
-    until @player1.has_lost? || @player2.has_lost? || type == :war && @player1.deck.cards.count <= 2 || type == :war && @player2.deck.cards.count <= 2 || current_turn == 1000000
+    until @player1.has_lost? || @player2.has_lost? || type != :basic && @player1.deck.cards.count < 3 || type != :basic && @player2.deck.cards.count < 3 || type == :mutually_assured_destruction && @player1.deck.cards.count < 3 || type == :mutually_assured_destruction && @player2.deck.cards.count < 3 || type == :out_of_cards || current_turn == 10000000
       pile_cards
       award_spoils(winner)
         if type == :basic || type == :war
@@ -26,16 +26,17 @@ class Turn
           p "Turn #{current_turn}: WAR! #{winner.name} wins 6 cards!"
           end
         else
-          p winner
+          p "Turn #{current_turn}: #{winner}!"
         end
-      @player1.deck.cards.shuffle!(random: Random.new(1))
-      @player2.deck.cards.shuffle!(random: Random.new(1))
+      @player1.deck.cards.shuffle!
+      @player2.deck.cards.shuffle!
       current_turn += 1
     end
-    if winner == "No Cards"
-      if @player1.deck.rank_of_card_at(0..2) == nil
+    binding.pry
+    if type == :war && @player1.deck.cards.count < 3 || type == :war && @player2.deck.cards.count < 3 || type == :mutually_assured_destruction && @player1.deck.cards.count < 3 || @player1.deck.cards.count <= 1 || @player2.deck.cards.count <= 1
+      if @player1.deck.cards.count > @player2.deck.cards.count
         p "#{@player2.name} has won!"
-      elsif @player2.deck.rank_of_card_at(0..2) == nil 
+      elsif @player2.deck.cards.count > @player1.deck.cards.count
         p "#{@player1.name} has won!"
       end
     elsif @player1.has_lost?
@@ -45,11 +46,14 @@ class Turn
     else
       p "DRAW"
     end
+
   end
 
   def type
     turn_result = nil
-    if @player1.deck.rank_of_card_at(0) == @player2.deck.rank_of_card_at(0) && @player1.deck.rank_of_card_at(2) == @player2.deck.rank_of_card_at(2) && @spoils_of_war == [] || @is_mutual == true
+    if @player1.deck.cards.count <= 2 || @player2.deck.cards.count <= 2
+      turn_result = :out_of_cards
+    elsif @player1.deck.rank_of_card_at(0) == @player2.deck.rank_of_card_at(0) && @player1.deck.rank_of_card_at(2) == @player2.deck.rank_of_card_at(2) && @spoils_of_war == [] || @is_mutual == true
       turn_result = :mutually_assured_destruction
     elsif @player1.deck.rank_of_card_at(0) != @player2.deck.rank_of_card_at(0) || @spoils_of_war.count == 2
       turn_result = :basic
@@ -85,7 +89,7 @@ end
 
 
   def winner
-    if @player1.deck.rank_of_card_at(0) == nil && @player1.deck.rank_of_card_at(2) == nil || @player2.deck.rank_of_card_at(0) == nil && @player2.deck.rank_of_card_at(2)
+    if @player1.deck.cards.count == 1 || @player2.deck.cards.count == 1
       "No Cards"
     elsif type == :basic
       if @player1.deck.rank_of_card_at(0) > @player2.deck.rank_of_card_at(0)
@@ -105,7 +109,9 @@ end
   end
 
   def award_spoils(winner)
-    if type == :basic || type == :war
+    if winner == "No Cards"
+      "No Cards"
+    elsif type == :basic || type == :war
       winner_cards = winner.deck.cards << spoils_of_war
       winner_cards.flatten!
       spoils_of_war.clear
